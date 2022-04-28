@@ -14,8 +14,8 @@ char const *const GIT_COMMIT = "******";
 void dummy_warm_hardware_benchmark() {
     BenchClock clock;
     std::cout << "# Initializing dummy benchmark...\n";
-    ImagingAlgorithms<Image3D<PixelOrder::XYC, false>> d;
-    Image3D<PixelOrder::XYC, false> di(5000, 5000, 3);
+    ImagingAlgorithms<Image3DXYC> d;
+    Image3DXYC di(5000, 5000, 3);
     d.channel_close_algorithms(di);
     std::cout << "# Dummy benchmark took " << clock.getElapsed() << " " STRINGIFY(CLOCK_PRECISION) "\n";
 }
@@ -38,18 +38,7 @@ int main(int argc, const char* argv[]) {
 
     // Setup das diferentes implementações de benchmarking
     std::vector<ImagingAlgorithmsBase*> benchType = {
-        new ImagingAlgorithms<Image3D<PixelOrder::XYC, false>>(),
-        new ImagingAlgorithms<Image3D<PixelOrder::XYC, true>>(),
-        new ImagingAlgorithms<Image3D<PixelOrder::XCY, false>>(),
-        new ImagingAlgorithms<Image3D<PixelOrder::XCY, true>>(),
-        new ImagingAlgorithms<Image3D<PixelOrder::YXC, false>>(),
-        new ImagingAlgorithms<Image3D<PixelOrder::YXC, true>>(),
-        new ImagingAlgorithms<Image3D<PixelOrder::YCX, false>>(),
-        new ImagingAlgorithms<Image3D<PixelOrder::YCX, true>>(),
-        new ImagingAlgorithms<Image3D<PixelOrder::CXY, false>>(),
-        new ImagingAlgorithms<Image3D<PixelOrder::CXY, true>>(),
-        new ImagingAlgorithms<Image3D<PixelOrder::CYX, false>>(),
-        new ImagingAlgorithms<Image3D<PixelOrder::CYX, true>>()
+        new ImagingAlgorithms<Image3DXYC>()
     };
 
     // Interpreta a linha de comando
@@ -126,7 +115,7 @@ int main(int argc, const char* argv[]) {
 }
 
 int _main_test_address() {
-    Image3D<PixelOrder::XYC, true> teste(100, 100, 3);
+    Image3DXYC teste(100, 100, 3);
     // printf("%p %p %p\n", (void *)&teste.buff[0][0][0],  (void *)&teste.buff[0][0][1],   (void *)&teste.buff[0][0][2]);
     printf("%lu %lu %lu\n", (uintptr_t)&teste(0, 0, 0),       (uintptr_t)&teste(0, 0, 1),        (uintptr_t)&teste(0, 0, 2));
     printf("%lu %lu %lu\n", (uintptr_t)&teste(0, 1, 0),       (uintptr_t)&teste(0, 2, 0),        (uintptr_t)&teste(0, 99, 0));
